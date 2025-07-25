@@ -8,6 +8,7 @@
 import CoreMotion
 
 class MotionTracker: ObservableObject {
+    // 无法解决的欧卡角问题
     private let motionManager = CMMotionManager()
     @Published var pitch: Float = 0
     @Published var yaw: Float = 0

@@ -24,23 +24,40 @@ struct Marker: Identifiable {
     let action: () -> Void
 }
 
+//pitch max is 90 ,yaw max is 360 :10-50 60-100 110-150 160-200 210-250 260-300 310-350
 let markers: [Marker] = [
     Marker(label: "A",
            color: Color("appRed"),
-           pitchCenter: 80,
+           pitchCenter: 60,
            yawCenter: 30,
-           pitchRange: 40,
-           yawRange: 40) {
+           pitchRange: 60,
+           yawRange: 20) {
         print("Clicked A")
     },
     Marker(label: "B",
-           color: Color("appBlue"),
-           pitchCenter: 85,
-           yawCenter: 100,
-           pitchRange: 40,
-           yawRange: 40) {
+           color: Color("appGreen"),
+           pitchCenter: 60,
+           yawCenter: 60,
+           pitchRange: 60,
+           yawRange: 20) {
         print("Clicked B")
-    }
+    },
+    Marker(label: "C",
+           color: Color("appBlue"),
+           pitchCenter: 60,
+           yawCenter: 90,
+           pitchRange: 60,
+           yawRange: 20) {
+        print("Clicked C")
+    },
+    Marker(label: "D",
+           color: Color("appYellow"),
+           pitchCenter: 60,
+           yawCenter: 120,
+           pitchRange: 60,
+           yawRange: 20) {
+        print("Clicked D")
+    },
 ]
 
 func fixedTargetHit(pitch: Float, yaw: Float,

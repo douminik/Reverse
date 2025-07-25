@@ -23,6 +23,14 @@ struct ContentView: View {
         NavigationStack {
             VStack(spacing: 30) {
                 
+                NavigationLink(destination: CustomPanoramaView()) {
+                    Text("创建全景图")
+                        .padding()
+                        .background(Color("ButtonColor"))
+                        .foregroundColor(.black)
+                        .clipShape(.capsule)
+                }
+                
                 // 经度输入框
                 VStack(alignment: .leading, spacing: 8) {
                     Text("经度 (Longitude)")

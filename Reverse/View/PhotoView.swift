@@ -10,16 +10,22 @@ import SwiftUIPanoramaViewer
 
 struct PhotoView: View {
     @EnvironmentObject var reverseManager: ReverseManager
+    let customImage: UIImage?
+    
     // Marker
     @State private var currentYaw: Float = 0
     @State private var currentPitch: Float = 0
     // Motion
     @StateObject var motionTracker = MotionTracker()
     
+    init(panoramaImage: UIImage? = nil) {
+        self.customImage = panoramaImage
+    }
+    
     
     var body: some View {
         ZStack {
-            if let image = reverseManager.panoramaViewModel.panoramaImage {
+            if let image = customImage ?? reverseManager.panoramaViewModel.panoramaImage {
                 PanoramaViewer(
                     image: SwiftUIPanoramaViewer.bindImage(image),
                     controlMethod: .motion,

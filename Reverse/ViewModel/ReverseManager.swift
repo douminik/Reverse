@@ -10,6 +10,7 @@ import Combine
 
 class ReverseManager: ObservableObject {
     @Published var panoramaViewModel = PanoramaViewModel()
+    @Published var customPanoramaViewModel = CustomPanoramaViewModel()
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -21,6 +22,10 @@ class ReverseManager: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellables)
+        
+        customPanoramaViewModel.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in self?.objectWillChange.send() }
+            .store(in: &cancellables)
     }
-
 }
