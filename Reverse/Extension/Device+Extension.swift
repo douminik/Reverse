@@ -7,4 +7,4 @@
 
 import Foundation
 
-let baseURL = "http://30.201.217.9:5001"
+let baseURL = "http://MacBook-Pro-M1-Max.local:5001"

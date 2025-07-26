@@ -43,7 +43,7 @@ struct ContentView: View {
                 
                 VStack {
                     CityImageCard(
-                        imageName: "syf",
+                        imageName: "hdm",
                         cityName: "Swift是世界上最好的语言",
                         gradientColors: [.gray, .blue, .purple],
                         isSelected: selectedCityIndex == nil
