@@ -268,6 +268,9 @@
 				DEVELOPMENT_TEAM = 9Z9VBNX6HZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Need User Location";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Need User Location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need User Location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -298,6 +301,9 @@
 				DEVELOPMENT_TEAM = 9Z9VBNX6HZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Need User Location";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Need User Location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Need User Location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

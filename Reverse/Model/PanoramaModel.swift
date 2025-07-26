@@ -24,8 +24,8 @@ struct PanoramaRequest {
     
     var postData: Data? {
         let parameters = [
-            "X": x,
-            "Y": y,
+            "x": x,
+            "y": y,
             "year": year
         ]
         

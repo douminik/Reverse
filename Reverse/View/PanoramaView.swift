@@ -32,17 +32,75 @@ struct PanoramaView: View {
             NavigationStack {
                 ZStack(alignment: .top) {
                     // PanoramaV iew
-//                    VideoView()
-                    
-                    PhotoView()
-                        .environmentObject(reverseManager)
+                    if reverseManager.trueIsPhotoFalseIsVideo {
+                        PhotoView()
+                            .environmentObject(reverseManager)
+                    } else {
+                        VideoView()
+                    }
                     
                     VStack {
                         Spacer()
                         Button {
-                            reverseManager.panoramaViewModel.isShowTimeLine.toggle()
+                            reverseManager.togglePhotoVideo()
                         } label: {
                             Text("Reverse")
+                                .padding()
+                                .foregroundStyle(.black)
+                                .clipShape(.capsule)
+                                .opacity(0.8)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(
+                                            AngularGradient(
+                                                colors: [
+                                                    .red,
+                                                    .orange,
+                                                    .yellow,
+                                                    .green,
+                                                    .mint,
+                                                    .cyan,
+                                                    .blue,
+                                                    .indigo,
+                                                    .purple,
+                                                    .pink,
+                                                    .red
+                                                ],
+                                                center: .center,
+                                                angle: .degrees(buttonGradientRotation)
+                                            )
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .fill(Color.black.opacity(0.3))
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(
+                                                    LinearGradient(
+                                                        colors: [
+                                                            .white.opacity(0.6),
+                                                            .white.opacity(0.2),
+                                                            .white.opacity(0.8)
+                                                        ],
+                                                        startPoint: .topLeading,
+                                                        endPoint: .bottomTrailing
+                                                    ),
+                                                    lineWidth: 2
+                                                )
+                                        )
+                                )
+                                .foregroundColor(.white)
+                                .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: buttonGradientRotation)
+                                .animation(.default, value: self.selectedYear)
+                        }
+                        .opacity(!reverseManager.panoramaViewModel.isShowTimeLine && reverseManager.trueIsPhotoFalseIsVideo ? 1.0 : 0.0)
+                        
+                        Button {
+                            reverseManager.panoramaViewModel.isShowTimeLine.toggle()
+                            reverseManager.trueIsPhotoFalseIsVideo = true
+                        } label: {
+                            Image(systemName: "arrow.backward.circle")
                                 .padding()
                                 .foregroundStyle(.black)
                                 .background(Color("ButtonColor"))
@@ -50,17 +108,15 @@ struct PanoramaView: View {
                                 .opacity(0.8)
                                 .padding()
                         }
-
+                        .opacity(reverseManager.panoramaViewModel.isShowTimeLine ? 0.0 : 1.0)
                     }
                     
                     // TimeLine View
-                    if !reverseManager.panoramaViewModel.timeLine.isEmpty && reverseManager.panoramaViewModel.isShowTimeLine {
+                    if let timeLine = reverseManager.panoramaViewModel.timeLine, reverseManager.panoramaViewModel.isShowTimeLine{
                         VStack {
                             HStack(spacing: 16) {
-                                ForEach(Array(reverseManager.panoramaViewModel.timeLine.sorted(by: { $0.key < $1.key }).enumerated()), id: \.element.key) { index, element in
-                                    let time = element.key
-                                    let _ = element.value
-                                    Text(time)
+                                ForEach(0..<timeLine.years.count, id: \.self) { index in
+                                    Text(timeLine.years[index])
                                         .font(.system(.title3, design: .rounded, weight: .medium))
                                         .padding(10)
                                         .background(
@@ -104,19 +160,19 @@ struct PanoramaView: View {
                                                         )
                                                 )
                                                 .shadow(
-                                                    color: Color.rainbow(index: index, total: reverseManager.panoramaViewModel.timeLine.count).opacity(0.8),
+                                                    color: Color.rainbow(index: index, total: timeLine.years.count).opacity(0.8),
                                                     radius: 8,
                                                     x: 0,
                                                     y: 2
                                                 )
                                         )
                                         .foregroundColor(.white)
-                                        .scaleEffect(selectedYear == time ? 1.1 : 0.9)
+                                        .scaleEffect(selectedYear == timeLine.years[index] ? 1.1 : 0.9)
                                         .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: false), value: buttonGradientRotation)
                                         .onTapGesture {
                                             effectManager.triggerHaptic(.medium)
-                                            self.selectedYear = time
-                                            reverseManager.panoramaViewModel.fetchPanoramaImageSync(year: time)
+                                            self.selectedYear = timeLine.years[index]
+                                            reverseManager.panoramaViewModel.fetchPanoramaImageSync(year: timeLine.years[index])
                                         }
                                         .animation(.default, value: self.selectedYear)
                                 }

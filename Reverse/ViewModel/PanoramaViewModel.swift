@@ -13,14 +13,14 @@ class PanoramaViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isShowTimeLine: Bool = false
     @Published var errorMessage: String?
-    @Published var timeLine: [String: String] = [:]
+    @Published var timeLine: TimeLine? = nil
     
     private let urlSession = URLSession.shared
     
     func debug() {
         self.isLoading = false
         self.isShowTimeLine = true
-        self.timeLine = ["2019": "sid", "2018": "sid", "2017": "sid"]
+        self.timeLine = nil
         self.panoramaImage = UIImage(named: "Street")
     }
     
@@ -56,14 +56,11 @@ class PanoramaViewModel: ObservableObject {
                 return
             }
             
-            if let arr = try? JSONSerialization.jsonObject(with: data) as? [Any],
-               let years = arr.first as? [String],
-               let sid = arr.last as? String {
-                var timeLineDict: [String: String] = [:]
-                for year in years {
-                    timeLineDict[year] = sid
-                }
-                self.timeLine = timeLineDict
+            if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let timelineData = json["timeline"] as? [String: Any],
+               let years = timelineData["years"] as? [String],
+               let sid = timelineData["sid"] as? String {
+                self.timeLine = TimeLine(years: years, sid: sid)
                 self.isShowTimeLine = true
             }
             
@@ -84,7 +81,7 @@ class PanoramaViewModel: ObservableObject {
         var components = URLComponents(string: "\(baseURL)/get_image")
         components?.queryItems = [
             URLQueryItem(name: "year", value: year),
-            URLQueryItem(name: "sid", value: timeLine[year])
+            URLQueryItem(name: "sid", value: timeLine?.sid)
         ]
         
         guard let url = components?.url else {
