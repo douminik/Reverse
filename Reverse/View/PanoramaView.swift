@@ -139,6 +139,22 @@ struct PanoramaView: View {
                                 .animation(.default, value: self.selectedYear)
                         }
                         .opacity(!reverseManager.panoramaViewModel.isShowTimeLine && reverseManager.trueIsPhotoFalseIsVideo ? 1.0 : 0.0)
+                        
+                        if !reverseManager.panoramaViewModel.isShowTimeLine {
+                            Button(action: {
+                                reverseManager.panoramaViewModel.isShowTimeLine = true
+                            }) {
+                                Image(systemName: "chevron.up")
+                                    .font(.title3)
+                                    .foregroundColor(.black)
+                                    .padding(10)
+                            }
+                            .tint(Color("ButtonColor"))
+                            .buttonStyle(.borderedProminent)
+                            .buttonBorderShape(.circle)
+                            .opacity(0.8)
+                            .padding()
+                        }
 
                         Button {
                             reverseManager.mapViewModel.videoGenerateStatus = .idle
@@ -148,7 +164,6 @@ struct PanoramaView: View {
                         } label: {
                             Image(systemName: "trash")
                                 .font(.title3)
-                                .background(Color("ButtonColor"))
                                 .foregroundColor(.black)
                                 .padding(10)
                         }
@@ -221,6 +236,7 @@ struct PanoramaView: View {
                                         .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: false), value: buttonGradientRotation)
                                         .onTapGesture {
                                             effectManager.triggerHaptic(.medium)
+                                            reverseManager.trueIsPhotoFalseIsVideo = true
                                             self.selectedYear = timeLine.years[index]
                                             reverseManager.panoramaViewModel.fetchPanoramaImageSync(year: timeLine.years[index])
                                         }
@@ -228,6 +244,7 @@ struct PanoramaView: View {
                                 }
                             }
                             .padding(.horizontal, 10)
+                            
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                         .onAppear {
@@ -275,6 +292,7 @@ struct PanoramaView: View {
                     HStack {
                         Button(action: {
                             dismiss()
+                            reverseManager.trueIsPhotoFalseIsVideo = true
                             reverseManager.panoramaViewModel.meetSomeProblem = false
                             self.reverseManager.videoUrl = ""
                             effectManager.stopAllEffects()
@@ -294,7 +312,6 @@ struct PanoramaView: View {
                     }
                     .padding(.leading, 10)
                     .padding(.top, 30)
-                    .padding(.bottom, 200)
                     
                     // 炫光边框
                     if reverseManager.panoramaViewModel.isLoading {
