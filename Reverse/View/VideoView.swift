@@ -9,11 +9,13 @@ import SwiftUI
 import AVKit
 
 struct VideoView: View {
-    private let player: AVPlayer = {
-        guard let url = Bundle.main.url(forResource: "demo", withExtension: "mp4") else {
-            fatalError("❌")
+    @EnvironmentObject var reverseManager: ReverseManager
+
+    private var player: AVPlayer = {
+        guard let videoURL = Bundle.main.url(forResource: "demo", withExtension: "mp4") else {
+            fatalError("❌ 视频文件没找到")
         }
-        return AVPlayer(url: url)
+        return AVPlayer(url: videoURL)
     }()
     
     var body: some View {

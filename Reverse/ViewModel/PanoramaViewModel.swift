@@ -11,6 +11,7 @@ import SwiftUI
 class PanoramaViewModel: ObservableObject {
     @Published var panoramaImage: UIImage?
     @Published var isLoading: Bool = false
+    @Published var meetSomeProblem: Bool = false
     @Published var isShowTimeLine: Bool = false
     @Published var errorMessage: String?
     @Published var timeLine: TimeLine? = nil
@@ -31,13 +32,15 @@ class PanoramaViewModel: ObservableObject {
         
         guard let url = request.url else {
             errorMessage = "无效的URL"
-            isLoading = false
+//            isLoading = false
+            meetSomeProblem = true
             return
         }
         
         guard let postData = request.postData else {
             errorMessage = "请求数据格式错误"
-            isLoading = false
+//            isLoading = false
+            meetSomeProblem = true
             return
         }
         
@@ -52,7 +55,8 @@ class PanoramaViewModel: ObservableObject {
             guard let httpResponse = response as? HTTPURLResponse,
                   httpResponse.statusCode == 200 else {
                 errorMessage = "网络请求失败"
-                isLoading = false
+//                isLoading = false
+                meetSomeProblem = true
                 return
             }
             
@@ -68,20 +72,27 @@ class PanoramaViewModel: ObservableObject {
             
         } catch {
             errorMessage = "获取日期失败: \(error.localizedDescription)"
-            isLoading = false
+//            isLoading = false
+            meetSomeProblem = true
             print("获取日期失败: \(error.localizedDescription)")
         }
     }
     
-    func fetchPanoramaImage(year: String) async {
+    func fetchPanoramaImage(year: String, sid: String = "", fromTimeLine: Bool = true) async {
         isLoading = true
         errorMessage = nil
         panoramaImage = nil
+        var nsid: String = ""
+        if fromTimeLine {
+            nsid = timeLine?.sid ?? ""
+        } else {
+            nsid = sid
+        }
         
         var components = URLComponents(string: "\(baseURL)/get_image")
         components?.queryItems = [
             URLQueryItem(name: "year", value: year),
-            URLQueryItem(name: "sid", value: timeLine?.sid)
+            URLQueryItem(name: "sid", value: nsid)
         ]
         
         guard let url = components?.url else {

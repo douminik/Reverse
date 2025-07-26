@@ -12,6 +12,7 @@ class ReverseManager: ObservableObject {
     @Published var panoramaViewModel = PanoramaViewModel()
     @Published var customPanoramaViewModel = CustomPanoramaViewModel()
     @Published var trueIsPhotoFalseIsVideo: Bool = true
+    @Published var videoUrl: String = ""
     private var cancellables = Set<AnyCancellable>()
     
     init() {

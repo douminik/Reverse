@@ -11,11 +11,13 @@ struct PanoramaRequest {
     let x: String
     let y: String
     let year: String
+    let sid: String
     
-    init(x: String, y: String, year: String) {
+    init(x: String, y: String, year: String, sid: String) {
         self.x = x
         self.y = y
         self.year = year
+        self.sid = sid
     }
     
     var url: URL? {
@@ -26,7 +28,8 @@ struct PanoramaRequest {
         let parameters = [
             "x": x,
             "y": y,
-            "year": year
+            "year": year,
+            "sid": sid,
         ]
         
         return try? JSONSerialization.data(withJSONObject: parameters)

@@ -32,11 +32,14 @@ struct PanoramaView: View {
             NavigationStack {
                 ZStack(alignment: .top) {
                     // PanoramaV iew
-                    if reverseManager.trueIsPhotoFalseIsVideo {
-                        PhotoView()
-                            .environmentObject(reverseManager)
-                    } else {
-                        VideoView()
+                    if !reverseManager.panoramaViewModel.meetSomeProblem {
+                        if reverseManager.trueIsPhotoFalseIsVideo {
+                            PhotoView()
+                                .environmentObject(reverseManager)
+                        } else {
+                            VideoView()
+                                .environmentObject(reverseManager)
+                        }
                     }
                     
                     VStack {
@@ -167,6 +170,8 @@ struct PanoramaView: View {
                                                 )
                                         )
                                         .foregroundColor(.white)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.01)
                                         .scaleEffect(selectedYear == timeLine.years[index] ? 1.1 : 0.9)
                                         .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: false), value: buttonGradientRotation)
                                         .onTapGesture {
@@ -210,9 +215,22 @@ struct PanoramaView: View {
                     .opacity(reverseManager.panoramaViewModel.isLoading ? 1.0 : 0.0)
                     .animation(.easeInOut, value: reverseManager.panoramaViewModel.isLoading)
                     
+                    VStack {
+                        Text("被神秘力量拦截")
+                            .foregroundColor(Color("ButtonColor"))
+                            .font(.system(.largeTitle, design: .default, weight: .black))
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    .background(.ultraThinMaterial)
+                    .opacity(reverseManager.panoramaViewModel.meetSomeProblem ? 1.0 : 0.0)
+                    .animation(.easeInOut, value: reverseManager.panoramaViewModel.meetSomeProblem)
+                    
+                    
+                    
                     HStack {
                         Button(action: {
                             dismiss()
+                            reverseManager.panoramaViewModel.meetSomeProblem = false
                             effectManager.stopAllEffects()
                         }) {
                             Image(systemName: "chevron.left")
